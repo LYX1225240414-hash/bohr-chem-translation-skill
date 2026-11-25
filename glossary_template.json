@@ -1,0 +1,17 @@
+{
+  "case_id": "N/A",
+  "terms": [
+    {
+      "term": "oxygen vacancy",
+      "zh": "氧空位",
+      "positions": ["p001", "fig2-caption"],
+      "decision_basis": "催化领域通行译法；全文统一"
+    },
+    {
+      "term": "DFT",
+      "zh": "密度泛函理论（DFT）",
+      "positions": ["p003"],
+      "decision_basis": "缩写首次出现给全称，后文统一用 DFT"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "case_id": "arXiv:2011.03269v1-abstract",
+  "terms": [
+    {
+      "term": "oxygen vacancy",
+      "zh": "氧空位",
+      "positions": ["P001", "P002", "P005", "P006"],
+      "decision_basis": "催化/材料领域通行译名，全篇统一"
+    },
+    {
+      "term": "TiO2",
+      "zh": "TiO₂（二氧化钛）",
+      "positions": ["P001", "P002", "P003", "P004", "P006"],
+      "decision_basis": "化学式首次出现给全称，后文保留化学式下标"
+    },
+    {
+      "term": "color center singlet state",
+      "zh": "色心单重态",
+      "positions": ["P004"],
+      "decision_basis": "color center=色心，singlet state=单重态，采用光谱学通行译法"
+    },
+    {
+      "term": "rutile",
+      "zh": "金红石相",
+      "positions": ["P004", "P005"],
+      "decision_basis": "TiO2 晶相标准译名"
+    },
+    {
+      "term": "anatase",
+      "zh": "锐钛矿相",
+      "positions": ["P004", "P005"],
+      "decision_basis": "TiO2 晶相标准译名"
+    },
+    {
+      "term": "embedded CCSD(T)",
+      "zh": "嵌入式 CCSD(T)",
+      "positions": ["P005"],
+      "decision_basis": "quantum chemistry 方法名，CCSD(T) 保留不译"
+    },
+    {
+      "term": "triplet state",
+      "zh": "三重态",
+      "positions": ["P005"],
+      "decision_basis": "与 singlet state 对仗，统一为单重态/三重态"
+    },
+    {
+      "term": "correlated wave function theories",
+      "zh": "关联波函数理论",
+      "positions": ["P006"],
+      "decision_basis": "quantum chemistry 标准译名"
+    },
+    {
+      "term": "ground state",
+      "zh": "基态",
+      "positions": ["P004"],
+      "decision_basis": "标准译名"
+    },
+    {
+      "term": "state-of-the-art",
+      "zh": "先进的",
+      "positions": ["P003"],
+      "decision_basis": "避免直译「最先进」，按论文中文表述习惯译"
+    }
+  ]
+}
