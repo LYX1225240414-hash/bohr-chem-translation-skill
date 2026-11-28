@@ -148,7 +148,7 @@ python3 "$L" check --source /app/work/source.txt \
 
 ## 资源
 
-- `resources/scripts/term_lint.py`：**执行内核**。`build` 抽候选术语生成术语表骨架、`check` 把译稿与术语表/原文逐条比对并输出十类问题、`stats` 做段落/数字/单位/引用/公式计数摸底。纯标准库（`argparse`/`re`/`json`/`collections`/`pathlib`），无第三方依赖，可完全离线运行。
+- `resources/scripts/term_lint.py`：**执行内核**。`build` 抽候选术语生成术语表骨架、`check` 把译稿与术语表/原文逐条比对并输出十类问题、`stats` 做段落/数字/单位/引用/公式计数摸底；单位计数会把译文里的中文单位词（`6 小时`）与原文符号（`6 h`）折算为同一单位，不报假缺口。`--out` 可传目录（写入约定文件名）或直接传文件名，两种写法都不会报错。纯标准库（`argparse`/`re`/`json`/`collections`/`pathlib`），无第三方依赖，可完全离线运行。
 - `resources/checklist.md`：带计数口径的译后自检清单。
 - `resources/gain_protocol.md`：使用增益对照协议与 `gain_record` 记录格式。
 - `resources/field_dict.md`：字段字典、锚点格式与术语表规范。
