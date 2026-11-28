@@ -1,0 +1,66 @@
+name: chem-literal-translation
+version: 1.1.0
+entrypoint: ../SKILL.md
+bundle_root: ..
+description: >
+  化学文献术语一致性翻译 Skill 的资源清单。执行内核为 resources/scripts/term_lint.py，
+  负责从原文抽候选术语生成术语表骨架，并把译文与术语表、原文逐条比对，
+  输出未译/缺译/术语表内混用/数字/单位/引用/公式/段落数十类差异及其计数。
+
+resources:
+  - path: resources/scripts/term_lint.py
+    kind: executable
+    runtime: python3
+    entry: "python3 resources/scripts/term_lint.py"
+    subcommands: [build, check, stats]
+    requires: []          # 纯标准库，无第三方依赖，可完全离线
+    inputs:
+      - "原文纯文本（.txt/.md；PDF 需先用平台 pdf-text-tool 抽文字层）"
+      - "译文纯文本（段落间空行分隔、顺序与原文一致）"
+      - "glossary.json（terms 数组：term/zh/variants/keep_original/decision_basis）"
+    outputs:
+      - "/app/work/glossary_draft.json"
+      - "/app/output/term_report.json"
+      - "/app/output/term_report.md"
+    outputs_note: >
+      term_report 的 verification_hint 直接给出 term_consistency / numeric_fidelity /
+      citation_formula_preserved / structure_parity 四项的计数口径，可原样写入
+      result.json 的 verification 与 translation_report。
+
+  - path: resources/checklist.md
+    kind: doc
+    purpose: 带计数口径的译后自检清单，对应 verification 九项
+
+  - path: resources/gain_protocol.md
+    kind: doc
+    purpose: 使用增益对照协议（同原文同术语表口径下，加载 Skill vs 不加载的记录方法）
+
+  - path: resources/field_dict.md
+    kind: doc
+    purpose: 字段字典、锚点格式、para_id 与 block_type 规则、术语表定名三条硬规则
+
+  - path: resources/glossary_template.json
+    kind: template
+    purpose: 术语表模板（含 variants / keep_original / decision_basis 字段说明）
+
+  - path: resources/output_example.json
+    kind: sample
+    purpose: 输出结构示意（占位，非任何真实文献译文或评测结果）
+
+  - path: examples/README.md
+    kind: doc
+    purpose: 最小调用示例与从原文到双语对照结果的完整步骤
+
+platform_tools_used:
+  - name: pdf-text-tool
+    purpose: 抽取 PDF 文字层到 /app/work/source.txt
+  - name: ocr-tool
+    purpose: 文字层缺失或扫描件时兜底；仍失败则该段标注不可读并降级 partial
+
+runtime:
+  python: ">=3.9"
+  network: not_required
+  notes: >
+    脚本只读原文与译文，不改动输入。所有结论按类别分组，带计数与锚点；
+    suspected_variants（疑似另译）与 negation_drift（否定表达差异）只提示、不扣分，
+    避免脚本自动误改专业表述——这两类必须人工确认后才动译文。
