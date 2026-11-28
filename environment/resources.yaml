@@ -1,5 +1,5 @@
 name: chem-literal-translation
-version: 1.1.0
+version: 1.2.0
 entrypoint: ../SKILL.md
 bundle_root: ..
 description: >
@@ -64,3 +64,6 @@ runtime:
     脚本只读原文与译文，不改动输入。所有结论按类别分组，带计数与锚点；
     suspected_variants（疑似另译）与 negation_drift（否定表达差异）只提示、不扣分，
     避免脚本自动误改专业表述——这两类必须人工确认后才动译文。
+
+changelog:
+  - "1.2.0: 单位计数把译文中文单位词（6 小时）与原文符号（6 h）折算为同一单位，消除假缺口；--out 兼容目录或文件名。"
