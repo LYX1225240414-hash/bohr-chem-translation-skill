@@ -1,17 +1,30 @@
 {
   "case_id": "N/A",
+  "_note": "模板：zh 与 decision_basis 必填；variants 只收同一概念的可接受异体；keep_original=true 表示按约定保留原文不译（缩写/化学式/基因名/软件名）。字段规范见 resources/field_dict.md。",
   "terms": [
     {
       "term": "oxygen vacancy",
       "zh": "氧空位",
-      "positions": ["p001", "fig2-caption"],
+      "variants": ["氧空位缺陷"],
+      "keep_original": false,
+      "positions": ["p2:1", "fig3"],
       "decision_basis": "催化领域通行译法；全文统一"
     },
     {
-      "term": "DFT",
-      "zh": "密度泛函理论（DFT）",
-      "positions": ["p003"],
-      "decision_basis": "缩写首次出现给全称，后文统一用 DFT"
+      "term": "XRD",
+      "zh": "X 射线衍射（XRD）",
+      "variants": [],
+      "keep_original": true,
+      "positions": ["p3:2"],
+      "decision_basis": "缩写按惯例保留原文，首次出现给中文全称"
+    },
+    {
+      "term": "capacity retention",
+      "zh": "容量保持率",
+      "variants": [],
+      "keep_original": false,
+      "positions": ["p1:3", "tab2"],
+      "decision_basis": "电化学储能领域标准译名；与库仑效率、循环稳定性区分"
     }
   ]
 }
