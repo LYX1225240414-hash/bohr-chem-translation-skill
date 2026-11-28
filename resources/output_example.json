@@ -1,22 +1,105 @@
 {
   "case_id": "示例标识，非真实案例",
+  "_note": "本文件仅为字段结构示意，不含任何真实文献译文、真实案例结果或评测成绩。字段规范见 resources/field_dict.md。",
   "status": "success",
   "translation": [
     {
       "para_id": "p001",
-      "source": "[示例原文，非真实文献]",
-      "target": "[示例译文，字段结构示意]",
-      "anchors": ["第1页摘要第2段"]
+      "block_type": "title",
+      "source": "[示例原文标题，非真实文献]",
+      "target": "[示例译文标题，仅示意字段]",
+      "anchors": ["p1:1"],
+      "term_refs": ["示例术语 A", "示例术语 B"]
+    },
+    {
+      "para_id": "p002",
+      "block_type": "body",
+      "source": "[示例正文段落，非真实文献]",
+      "target": "[示例译文段落，仅示意字段]",
+      "anchors": ["p1:2"],
+      "term_refs": ["示例术语 A"]
+    },
+    {
+      "para_id": "p003",
+      "block_type": "caption",
+      "source": "[示例图注，非真实文献]",
+      "target": "[示例译文图注，图注单独成段]",
+      "anchors": ["p2:1", "fig1"],
+      "term_refs": ["示例术语 C"]
     }
   ],
   "glossary": {
-    "terms": []
+    "terms": [
+      {
+        "term": "示例术语 A",
+        "zh": "示例译名 A",
+        "variants": [],
+        "keep_original": false,
+        "positions": ["p1:1", "p1:2"],
+        "decision_basis": "示例：领域通行译法，全文统一"
+      },
+      {
+        "term": "示例缩写 B",
+        "zh": "示例中文全称（B）",
+        "variants": [],
+        "keep_original": true,
+        "positions": ["p1:2"],
+        "decision_basis": "示例：缩写按惯例保留，首次出现给全称"
+      }
+    ]
   },
   "verification": {
-    "term_consistency": "示例：通过",
-    "paragraph_completeness": "示例：通过",
-    "fact_preservation": "示例：通过"
+    "term_consistency": {"result": "pass", "evidence": "示例：term_ok 0 / term_total 0；未译 0，缺译 0，混用 0"},
+    "numeric_fidelity": {"result": "pass", "evidence": "示例：number_mismatch_count = 0（引用编号已剔除）"},
+    "unit_fidelity": {"result": "pass", "evidence": "示例：unit_mismatch_count = 0；unit_converted_count = 0（等价中文写法）"},
+    "citation_formula_preserved": {"result": "pass", "evidence": "示例：citation_mismatch_count = 0；formula_mismatch_count = 0"},
+    "paragraph_completeness": {"result": "pass", "evidence": "示例：译文 0 段 / 原文 0 段；title/body/caption/table_head/footnote 覆盖 0/5"},
+    "anchor_spotcheck": {"result": "na", "evidence": "示例：抽查 0 处，回查成功 0 处——真实运行须填实际抽查数与短引片段"},
+    "no_new_facts": {"result": "pass", "evidence": "示例：stats.only_in_target 为空"},
+    "relation_preservation": {"result": "na", "evidence": "示例：否定/限定/指代抽查 0 处通过 0 处——脚本测不出，须人工填"},
+    "uncertainty_disclosure": {"result": "na", "evidence": "示例：材料实际残缺 0 处，已标注 0 条"}
   },
-  "uncertainties": [],
-  "change_log": []
+  "translation_report": {
+    "term_total": 0,
+    "term_ok": 0,
+    "untranslated_count": 0,
+    "missing_term_count": 0,
+    "inconsistent_count": 0,
+    "suspected_variant_count": 0,
+    "number_mismatch_count": 0,
+    "unit_mismatch_count": 0,
+    "unit_converted_count": 0,
+    "citation_mismatch_count": 0,
+    "formula_mismatch_count": 0,
+    "paragraph_gap_count": 0,
+    "_source": "示例：真实运行时必须原样转述 /app/output/term_report.json，不得另算一套"
+  },
+  "gain_record": {
+    "conditions": {"same_source": true, "same_glossary": true, "same_budget": true, "same_task": true},
+    "mode": "B_single_run_two_drafts",
+    "baseline": {"draft": "/app/work/draft_blind.md", "note": "示例：不查术语表直接翻译的第一版"},
+    "with_skill": {"draft": "/app/output/translation_zh.md", "note": "示例：按本工作流产出的定稿"},
+    "delta_note": "示例：术语一致率与未译数的变化须由两次 check 的真实计数填入；测不出写 na",
+    "verifiable_artifacts": ["/app/output/term_report.json", "/app/output/term_report.md"]
+  },
+  "uncertainties": [
+    {
+      "item": "示例：某个公式为图片",
+      "reason": "无文字层，无法确认上下标",
+      "anchor": "eq2",
+      "handover": "需人工对照原文补录，或提供 LaTeX 源码"
+    }
+  ],
+  "sources": [
+    {"path": "/input/case.json", "role": "案例输入与 output_contract"},
+    {"path": "/app/work/source.txt", "role": "原文文字层", "pages": 0, "ocr_used": false}
+  ],
+  "change_log": [
+    {
+      "problem": "示例：某术语在译文中有两种写法",
+      "fix": "统一为术语表锁定译名",
+      "location": "p004",
+      "round": 1
+    }
+  ]
 }
