@@ -51,6 +51,24 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+
+def _as_outfile(p, default_name):
+    """--out 兼容层：传目录则写入目录下 default_name，传文件名则直接写该文件。"""
+    path = Path(p)
+    if path.is_dir() or not path.suffix:
+        path = path / default_name
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def _as_outdir(p):
+    """--out 兼容层：传的是文件名时取其父目录，避免把文件路径当目录用而崩溃。"""
+    path = Path(p)
+    if path.suffix.lower() in (".json", ".md", ".txt", ".yaml", ".yml", ".csv", ".tex", ".bib"):
+        path = path.parent if str(path.parent) not in ("", ".") else Path(".")
+    path.mkdir(parents=True, exist_ok=True)
+    return path
+
 NUM = re.compile(r"(?<![\w.])\d+(?:\.\d+)?(?:[eE][+-]?\d+)?%?")
 
 # 单位只认「数值 + 单位」的形式。纯字母单位（s / h / L / K）若不加数字前置约束，
@@ -103,8 +121,20 @@ def norm_unit(u):
     return u.replace("µ", "μ").replace("°C", "℃")
 
 
+# 中文单位词 → 符号。译文写「6 小时」而原文写「6 h」属于等价转换，不能判为丢失。
+CN_UNIT_REV = {}
+for _sym, _cn in CN_UNIT.items():
+    CN_UNIT_REV.setdefault(_cn, _sym)
+CN_UNIT_PAT = re.compile(
+    r"(?<![\w.])\d+(?:\.\d+)?\s*(" + "|".join(sorted(CN_UNIT_REV, key=len, reverse=True)) + r")")
+
+
 def count_units(text):
-    return Counter(norm_unit(m.group(1)) for m in UNIT.finditer(text))
+    """按单位符号归一计数；中文单位词折算为同一符号，避免中英混写产生假缺口。"""
+    c = Counter(norm_unit(m.group(1)) for m in UNIT.finditer(text))
+    for m in CN_UNIT_PAT.finditer(text):
+        c[norm_unit(CN_UNIT_REV[m.group(1)])] += 1
+    return c
 
 
 def norm(s):
@@ -167,9 +197,9 @@ def cmd_build(args):
              for t, c in items[:120]]
     out = {"terms": terms,
            "note": "zh 与 decision_basis 需人工/Agent 填写；keep_original=true 表示按约定保留原文（缩写、软件名）。"}
-    Path(args.out).mkdir(parents=True, exist_ok=True)
-    (Path(args.out) / "glossary_draft.json").write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps({"ok": True, "candidates": len(terms), "out": str(Path(args.out) / "glossary_draft.json")}, ensure_ascii=False))
+    _d = _as_outdir(args.out)
+    (_d / "glossary_draft.json").write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(json.dumps({"ok": True, "candidates": len(terms), "out": str(_d / "glossary_draft.json")}, ensure_ascii=False))
     return 0
 
 
@@ -355,7 +385,7 @@ def cmd_check(args):
             "needs_human_review": f"疑似另译 {len(suspected)} 条；否定表达差异告警 {len(negation_drift)} 条——这两类只作提示，需人工确认后再改",
         },
     }
-    outdir = Path(args.out)
+    outdir = _as_outdir(args.out)
     outdir.mkdir(parents=True, exist_ok=True)
     (outdir / "term_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
